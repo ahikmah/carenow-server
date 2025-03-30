@@ -4,14 +4,16 @@ import helmet from "helmet";
 import { pino } from "pino";
 
 import { openAPIRouter } from "@/api-docs/openAPIRouter";
+import { doctorRouter } from "@/api/doctor/doctorRouter";
+import { mcuRouter } from "@/api/mcu/mcuRouter";
+import { medicationRouter } from "@/api/medication/medicationRouter";
 import { patientRouter } from "@/api/patient/patientRouter";
+import { treatmentRouter } from "@/api/treatment/treatmentRouter";
+
 import errorHandler from "@/common/middleware/errorHandler";
 import rateLimiter from "@/common/middleware/rateLimiter";
 import requestLogger from "@/common/middleware/requestLogger";
 import { env } from "@/common/utils/envConfig";
-import { doctorRouter } from "./api/doctor/doctorRouter";
-import { medicationRouter } from "./api/medication/medicationRouter";
-import { treatmentRouter } from "./api/treatment/treatmentRouter";
 
 const logger = pino({ name: "server start" });
 const app: Express = express();
@@ -34,6 +36,7 @@ app.use("/doctor", doctorRouter);
 app.use("/patient", patientRouter);
 app.use("/medication", medicationRouter);
 app.use("/treatment", treatmentRouter);
+app.use("/mcu", mcuRouter);
 
 // Swagger UI
 app.use(openAPIRouter);

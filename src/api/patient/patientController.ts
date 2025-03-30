@@ -5,23 +5,23 @@ import { tx } from "@/common/config/dbConfig";
 import { handleServiceResponse } from "@/common/utils/httpHandlers";
 
 class PatientController {
-  public createPatient: RequestHandler = async (req: Request, res: Response) => {
+  public add: RequestHandler = async (req: Request, res: Response) => {
     const payload = req.body;
 
     tx(async (db: any) => {
-      const serviceResponse = await service.create(payload, db);
+      const serviceResponse = await service.add(payload, db);
       return handleServiceResponse(serviceResponse, res);
     }, res);
   };
 
-  public getAllPatients: RequestHandler = async (_req: Request, res: Response) => {
+  public findAll: RequestHandler = async (_req: Request, res: Response) => {
     tx(async (db: any) => {
       const serviceResponse = await service.findAll(db);
       return handleServiceResponse(serviceResponse, res);
     }, res);
   };
 
-  public getPatientById: RequestHandler = async (req: Request, res: Response) => {
+  public findById: RequestHandler = async (req: Request, res: Response) => {
     const id = req.params.id;
 
     tx(async (db: any) => {
@@ -30,21 +30,21 @@ class PatientController {
     }, res);
   };
 
-  public updatePatientById: RequestHandler = async (req: Request, res: Response) => {
+  public updateById: RequestHandler = async (req: Request, res: Response) => {
     const id = req.params.id;
     const payload = req.body;
 
     tx(async (db: any) => {
-      const serviceResponse = await service.update("id", id, payload, db);
+      const serviceResponse = await service.updateByKey("id", id, payload, db);
       return handleServiceResponse(serviceResponse, res);
     }, res);
   };
 
-  public deletePatientById: RequestHandler = async (req: Request, res: Response) => {
+  public deleteById: RequestHandler = async (req: Request, res: Response) => {
     const id = req.params.id;
 
     tx(async (db: any) => {
-      const serviceResponse = await service.remove("id", id, db);
+      const serviceResponse = await service.deleteByKey("id", id, db);
       return handleServiceResponse(serviceResponse, res);
     }, res);
   };

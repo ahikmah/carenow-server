@@ -3,16 +3,16 @@ import express, { type Router } from "express";
 import { z } from "zod";
 
 import { createApiResponse } from "@/api-docs/openAPIResponseBuilders";
-import { DoctorSchema, GetDoctorSchema } from "@/api/doctor/doctorModel";
+import { doctorController } from "@/api/doctor/doctorController";
+import { CreateDoctorSchema, DoctorSchema } from "@/api/doctor/doctorModel";
 import { validateRequest } from "@/common/utils/httpHandlers";
-import { doctorController } from "./doctorController";
 
 export const doctorRegistry = new OpenAPIRegistry();
 export const doctorRouter: Router = express.Router();
 
 doctorRegistry.register("Doctor", DoctorSchema);
 
-// Create a new patient
+// Create a new doctor
 doctorRegistry.registerPath({
   method: "post",
   path: "/doctor",
@@ -24,18 +24,18 @@ doctorRegistry.registerPath({
   },
   responses: createApiResponse(DoctorSchema, "Success"),
 });
-doctorRouter.post("/", validateRequest(GetDoctorSchema), doctorController.createDoctor);
+doctorRouter.post("/", validateRequest(CreateDoctorSchema), doctorController.add);
 
-// Get all patients
+// Get all doctors
 doctorRegistry.registerPath({
   method: "get",
   path: "/doctor",
   tags: ["Doctor"],
   responses: createApiResponse(z.array(DoctorSchema), "Success"),
 });
-doctorRouter.get("/", doctorController.getAllDoctor);
+doctorRouter.get("/", doctorController.findAll);
 
-// Get a patient by ID
+// Get a doctor by ID
 doctorRegistry.registerPath({
   method: "get",
   path: "/doctor/{id}",
@@ -53,9 +53,9 @@ doctorRegistry.registerPath({
   ],
   responses: createApiResponse(DoctorSchema, "Success"),
 });
-doctorRouter.get("/:id", doctorController.getDoctorById);
+doctorRouter.get("/:id", doctorController.findById);
 
-// Update a patient by ID
+// Update a doctor by ID
 doctorRegistry.registerPath({
   method: "patch",
   path: "/doctor/{id}",
@@ -78,9 +78,9 @@ doctorRegistry.registerPath({
   },
   responses: createApiResponse(DoctorSchema, "Success"),
 });
-doctorRouter.patch("/:id", doctorController.updateDoctorById);
+doctorRouter.patch("/:id", doctorController.updateById);
 
-// Delete a patient by ID
+// Delete a doctor by ID
 doctorRegistry.registerPath({
   method: "delete",
   path: "/doctor/{id}",
@@ -98,4 +98,4 @@ doctorRegistry.registerPath({
   ],
   responses: createApiResponse(z.boolean(), "Success", 200),
 });
-doctorRouter.delete("/:id", doctorController.deleteDoctortById);
+doctorRouter.delete("/:id", doctorController.deleteById);

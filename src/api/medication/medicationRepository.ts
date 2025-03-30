@@ -1,6 +1,7 @@
 import type { Medication } from "@/api/medication/medicationModel";
 import {
   generateInsertSQL as insert,
+  generateMultiInsertSQL as multiInsert,
   generateDeleteSQL as remove,
   generateSelectSQL as select,
   generateUpdateSQL as update,
@@ -12,6 +13,13 @@ export class MedicationRepository {
     const result = await db.query(sql);
 
     return result.rows[0] || null;
+  }
+
+  async addMany(data: Medication[], db: any): Promise<Medication[] | null> {
+    const sql = multiInsert("master_medication", data, ["name"]);
+    const result = await db.query(sql);
+
+    return result.rows || null;
   }
 
   async findAll(db: any): Promise<Medication[]> {
@@ -28,14 +36,14 @@ export class MedicationRepository {
     return result.rows[0] || null;
   }
 
-  async edit(key: string, value: string | number, data: Medication, db: any): Promise<Medication | null> {
+  async updateByKey(key: string, value: string | number, data: Medication, db: any): Promise<Medication | null> {
     const sql = update("master_medication", data, { [key]: value });
     const result = await db.query(sql);
 
     return result.rows[0] || null;
   }
 
-  async delete(key: string, value: string, db: any): Promise<boolean> {
+  async deleteByKey(key: string, value: string, db: any): Promise<boolean> {
     const sql = remove("master_medication", { [key]: value });
     const result = await db.query(sql);
 

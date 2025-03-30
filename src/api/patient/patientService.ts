@@ -13,9 +13,9 @@ export class PatientService {
   }
 
   // Creates a new patient in the database
-  async create(data: Patient, db: any): Promise<ServiceResponse<Patient | null>> {
+  async add(data: Patient, db: any): Promise<ServiceResponse<Patient | null>> {
     try {
-      const patient = await this.patientRepository.addPatient(data, db);
+      const patient = await this.patientRepository.add(data, db);
 
       if (!patient) {
         return ServiceResponse.failure("Patient not created", null, StatusCodes.INTERNAL_SERVER_ERROR);
@@ -36,7 +36,7 @@ export class PatientService {
   // Retrieves all patients from the database
   async findAll(db: any): Promise<ServiceResponse<Patient[] | null>> {
     try {
-      const patients = await this.patientRepository.findAllPatient(db);
+      const patients = await this.patientRepository.findAll(db);
       if (!patients || patients.length === 0) {
         return ServiceResponse.failure("No Patients found", null, StatusCodes.NOT_FOUND);
       }
@@ -72,9 +72,14 @@ export class PatientService {
   }
 
   // Updates a patient in the database
-  async update(key: string, value: string | number, data: Patient, db: any): Promise<ServiceResponse<Patient | null>> {
+  async updateByKey(
+    key: string,
+    value: string | number,
+    data: Patient,
+    db: any,
+  ): Promise<ServiceResponse<Patient | null>> {
     try {
-      const patient = await this.patientRepository.updatePatient(key, value, data, db);
+      const patient = await this.patientRepository.updateByKey(key, value, data, db);
       if (!patient) {
         return ServiceResponse.failure("Patient not updated", null, StatusCodes.NOT_FOUND);
       }
@@ -91,9 +96,9 @@ export class PatientService {
   }
 
   // Removes a patient from the database
-  async remove(key: string, value: string, db: any): Promise<ServiceResponse<boolean>> {
+  async deleteByKey(key: string, value: string, db: any): Promise<ServiceResponse<boolean>> {
     try {
-      const result = await this.patientRepository.removePatient(key, value, db);
+      const result = await this.patientRepository.deleteByKey(key, value, db);
       if (!result) {
         return ServiceResponse.failure("Patient not removed", false, StatusCodes.NOT_FOUND);
       }

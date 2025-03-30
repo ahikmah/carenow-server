@@ -3,9 +3,9 @@ import express, { type Router } from "express";
 import { z } from "zod";
 
 import { createApiResponse } from "@/api-docs/openAPIResponseBuilders";
-import { GetMedicationSchema, MedicationSchema } from "@/api/medication/medicationModel";
+import { medicationController } from "@/api/medication/medicationController";
+import { CreateMedicationSchema, MedicationSchema } from "@/api/medication/medicationModel";
 import { validateRequest } from "@/common/utils/httpHandlers";
-import { treatmentController } from "./medicationController";
 
 export const medicationRegistry = new OpenAPIRegistry();
 export const medicationRouter: Router = express.Router();
@@ -24,7 +24,7 @@ medicationRegistry.registerPath({
   },
   responses: createApiResponse(MedicationSchema, "Success"),
 });
-medicationRouter.post("/", validateRequest(GetMedicationSchema), treatmentController.createMedication);
+medicationRouter.post("/", validateRequest(CreateMedicationSchema), medicationController.add);
 
 // Get all medication
 medicationRegistry.registerPath({
@@ -33,7 +33,7 @@ medicationRegistry.registerPath({
   tags: ["Medication"],
   responses: createApiResponse(z.array(MedicationSchema), "Success"),
 });
-medicationRouter.get("/", treatmentController.getAllMedication);
+medicationRouter.get("/", medicationController.findAll);
 
 // Get a medication by ID
 medicationRegistry.registerPath({
@@ -53,7 +53,7 @@ medicationRegistry.registerPath({
   ],
   responses: createApiResponse(MedicationSchema, "Success"),
 });
-medicationRouter.get("/:id", treatmentController.getAllMedication);
+medicationRouter.get("/:id", medicationController.findById);
 
 // Update a medication by ID
 medicationRegistry.registerPath({
@@ -78,7 +78,7 @@ medicationRegistry.registerPath({
   },
   responses: createApiResponse(MedicationSchema, "Success"),
 });
-medicationRouter.patch("/:id", treatmentController.updateMedicationById);
+medicationRouter.patch("/:id", medicationController.updateById);
 
 // Delete a medication by ID
 medicationRegistry.registerPath({
@@ -98,4 +98,4 @@ medicationRegistry.registerPath({
   ],
   responses: createApiResponse(z.boolean(), "Success", 200),
 });
-medicationRouter.delete("/:id", treatmentController.deleteMedicationById);
+medicationRouter.delete("/:id", medicationController.deleteById);

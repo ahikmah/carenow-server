@@ -3,9 +3,9 @@ import express, { type Router } from "express";
 import { z } from "zod";
 
 import { createApiResponse } from "@/api-docs/openAPIResponseBuilders";
-import { GetPatientSchema, PatientSchema } from "@/api/patient/patientModel";
+import { patientController } from "@/api/patient/patientController";
+import { CreatePatientSchema, PatientSchema } from "@/api/patient/patientModel";
 import { validateRequest } from "@/common/utils/httpHandlers";
-import { patientController } from "./patientController";
 
 export const patientRegistry = new OpenAPIRegistry();
 export const patientRouter: Router = express.Router();
@@ -24,7 +24,7 @@ patientRegistry.registerPath({
   },
   responses: createApiResponse(PatientSchema, "Success"),
 });
-patientRouter.post("/", validateRequest(GetPatientSchema), patientController.createPatient);
+patientRouter.post("/", validateRequest(CreatePatientSchema), patientController.add);
 
 // Get all patient
 patientRegistry.registerPath({
@@ -33,7 +33,7 @@ patientRegistry.registerPath({
   tags: ["Patient"],
   responses: createApiResponse(z.array(PatientSchema), "Success"),
 });
-patientRouter.get("/", patientController.getAllPatients);
+patientRouter.get("/", patientController.findAll);
 
 // Get a patient by ID
 patientRegistry.registerPath({
@@ -53,7 +53,7 @@ patientRegistry.registerPath({
   ],
   responses: createApiResponse(PatientSchema, "Success"),
 });
-patientRouter.get("/:id", patientController.getPatientById);
+patientRouter.get("/:id", patientController.findById);
 
 // Update a patient by ID
 patientRegistry.registerPath({
@@ -78,7 +78,7 @@ patientRegistry.registerPath({
   },
   responses: createApiResponse(PatientSchema, "Success"),
 });
-patientRouter.patch("/:id", patientController.updatePatientById);
+patientRouter.patch("/:id", patientController.updateById);
 
 // Delete a patient by ID
 patientRegistry.registerPath({
@@ -98,4 +98,4 @@ patientRegistry.registerPath({
   ],
   responses: createApiResponse(z.boolean(), "Success", 200),
 });
-patientRouter.delete("/:id", patientController.deletePatientById);
+patientRouter.delete("/:id", patientController.deleteById);

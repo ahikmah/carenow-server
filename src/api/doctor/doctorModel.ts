@@ -19,16 +19,16 @@ export const DoctorSchema = z.object({
   notes: z.string(),
 });
 
-export const GetDoctorSchema = z.object({
+export const CreateDoctorSchema = z.object({
   body: z.object({
     name: commonValidations.name,
-    specialization: commonValidations.generalString,
+    specialization: z.string(),
     phone_number: commonValidations.phone_number,
     email: commonValidations.email,
     address: commonValidations.address,
-    avaibility: commonValidations.generalString,
+    avaibility: z.string(),
     yoe: commonValidations.yoe,
-    license_number: commonValidations.generalString,
-    notes: commonValidations.generalString,
+    license_number: z.string(),
+    notes: z.string(),
   }),
 });

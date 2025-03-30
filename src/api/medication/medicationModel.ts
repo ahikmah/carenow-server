@@ -11,7 +11,7 @@ export const MedicationSchema = z.object({
   name: z.string(),
 });
 
-export const GetMedicationSchema = z.object({
+export const CreateMedicationSchema = z.object({
   body: z.object({
     name: commonValidations.name,
   }),

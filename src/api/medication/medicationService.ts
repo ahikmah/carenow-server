@@ -13,7 +13,7 @@ export class MedicationService {
   }
 
   // Creates a new treatment in the database
-  async create(data: Medication, db: any): Promise<ServiceResponse<Medication | null>> {
+  async add(data: Medication, db: any): Promise<ServiceResponse<Medication | null>> {
     try {
       const treatment = await this.MedicationRepository.add(data, db);
 
@@ -33,19 +33,19 @@ export class MedicationService {
     }
   }
 
-  // Retrieves all patients from the database
+  // Retrieves all medications from the database
   async findAll(db: any): Promise<ServiceResponse<Medication[] | null>> {
     try {
-      const patients = await this.MedicationRepository.findAll(db);
-      if (!patients || patients.length === 0) {
-        return ServiceResponse.failure("No Patients found", null, StatusCodes.NOT_FOUND);
+      const medications = await this.MedicationRepository.findAll(db);
+      if (!medications || medications.length === 0) {
+        return ServiceResponse.failure("No Medications found", null, StatusCodes.NOT_FOUND);
       }
-      return ServiceResponse.success<Medication[]>("Patients found", patients);
+      return ServiceResponse.success<Medication[]>("Medications found", medications);
     } catch (ex) {
-      const errorMessage = `Error finding all patients: $${(ex as Error).message}`;
+      const errorMessage = `Error finding all medications: $${(ex as Error).message}`;
       logger.error(errorMessage);
       return ServiceResponse.failure(
-        "An error occurred while retrieving patients.",
+        "An error occurred while retrieving medications.",
         null,
         StatusCodes.INTERNAL_SERVER_ERROR,
       );
@@ -72,14 +72,14 @@ export class MedicationService {
   }
 
   // Updates a treatment in the database
-  async update(
+  async updateByKey(
     key: string,
     value: string | number,
     data: Medication,
     db: any,
   ): Promise<ServiceResponse<Medication | null>> {
     try {
-      const treatment = await this.MedicationRepository.edit(key, value, data, db);
+      const treatment = await this.MedicationRepository.updateByKey(key, value, data, db);
       if (!treatment) {
         return ServiceResponse.failure("Medication not updated", null, StatusCodes.NOT_FOUND);
       }
@@ -96,9 +96,9 @@ export class MedicationService {
   }
 
   // Removes a treatment from the database
-  async remove(key: string, value: string, db: any): Promise<ServiceResponse<boolean>> {
+  async deleteByKey(key: string, value: string, db: any): Promise<ServiceResponse<boolean>> {
     try {
-      const result = await this.MedicationRepository.delete(key, value, db);
+      const result = await this.MedicationRepository.deleteByKey(key, value, db);
       if (!result) {
         return ServiceResponse.failure("Medication not removed", false, StatusCodes.NOT_FOUND);
       }

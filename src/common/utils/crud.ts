@@ -30,6 +30,52 @@ export function generateInsertSQL(tableName: string, data: Record<string, any>, 
   return sql;
 }
 
+export function generateMultiInsertSQL(tableName: string, data: Record<string, any>[], requiredFields: string[]) {
+  // Check if the data array is empty
+  if (data.length === 0) {
+    throw new Error("No valid data provided for insert.");
+  }
+
+  // Initialize arrays for columns and values
+  const columns: string[] = [];
+  const values: string[] = [];
+
+  // Loop through the first data object to construct columns
+  for (const [key, value] of Object.entries(data[0])) {
+    if (requiredFields.includes(key) || value !== undefined) {
+      columns.push(key); // Add column name
+    }
+  }
+
+  // If no columns were added, return null (no data to insert)
+  if (columns.length === 0) {
+    throw new Error("No valid data provided for insert.");
+  }
+
+  // Loop through each data object to construct values
+  for (const item of data) {
+    const rowValues: string[] = [];
+    for (const key of columns) {
+      const value = item[key];
+      // Check if the value is null or undefined and handle accordingly
+      if (value === null || value === undefined) {
+        rowValues.push("NULL");
+      } else if (typeof value === "string") {
+        // Escape single quotes for strings and wrap the value in quotes
+        rowValues.push(`'${value.replace(/'/g, "''")}'`);
+      } else {
+        // For non-string values, directly add them (e.g., numbers, booleans, dates)
+        rowValues.push(value.toString());
+      }
+    }
+    values.push(`(${rowValues.join(", ")})`);
+  }
+
+  // Build and return the SQL query
+  const sql = `INSERT INTO ${tableName} (${columns.join(", ")}) VALUES ${values.join(", ")} RETURNING *;`;
+  return sql;
+}
+
 export function generateSelectSQL(
   tableName: string,
   fields: string[] = ["*"], // Default is to select all fields

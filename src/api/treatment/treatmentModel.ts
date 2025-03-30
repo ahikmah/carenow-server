@@ -11,7 +11,7 @@ export const TreatmentSchema = z.object({
   name: z.string(),
 });
 
-export const GetTreatmentSchema = z.object({
+export const CreateTreatmentSchema = z.object({
   body: z.object({
     name: commonValidations.name,
   }),

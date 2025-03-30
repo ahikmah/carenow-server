@@ -3,9 +3,9 @@ import express, { type Router } from "express";
 import { z } from "zod";
 
 import { createApiResponse } from "@/api-docs/openAPIResponseBuilders";
-import { GetTreatmentSchema, TreatmentSchema } from "@/api/treatment/treatmentModel";
+import { treatmentController } from "@/api/treatment/treatmentController";
+import { CreateTreatmentSchema, TreatmentSchema } from "@/api/treatment/treatmentModel";
 import { validateRequest } from "@/common/utils/httpHandlers";
-import { treatmentController } from "./treatmentController";
 
 export const treatmentRegistry = new OpenAPIRegistry();
 export const treatmentRouter: Router = express.Router();
@@ -24,7 +24,7 @@ treatmentRegistry.registerPath({
   },
   responses: createApiResponse(TreatmentSchema, "Success"),
 });
-treatmentRouter.post("/", validateRequest(GetTreatmentSchema), treatmentController.createTreatment);
+treatmentRouter.post("/", validateRequest(CreateTreatmentSchema), treatmentController.add);
 
 // Get all treatments
 treatmentRegistry.registerPath({
@@ -33,7 +33,7 @@ treatmentRegistry.registerPath({
   tags: ["Treatment"],
   responses: createApiResponse(z.array(TreatmentSchema), "Success"),
 });
-treatmentRouter.get("/", treatmentController.getAllTreatment);
+treatmentRouter.get("/", treatmentController.findAll);
 
 // Get a treatment by ID
 treatmentRegistry.registerPath({
@@ -53,7 +53,7 @@ treatmentRegistry.registerPath({
   ],
   responses: createApiResponse(TreatmentSchema, "Success"),
 });
-treatmentRouter.get("/:id", treatmentController.getTreatmentById);
+treatmentRouter.get("/:id", treatmentController.findById);
 
 // Update a treatment by ID
 treatmentRegistry.registerPath({
@@ -78,7 +78,7 @@ treatmentRegistry.registerPath({
   },
   responses: createApiResponse(TreatmentSchema, "Success"),
 });
-treatmentRouter.patch("/:id", treatmentController.updateTreatmentById);
+treatmentRouter.patch("/:id", treatmentController.updateById);
 
 // Delete a treatment by ID
 treatmentRegistry.registerPath({
@@ -98,4 +98,4 @@ treatmentRegistry.registerPath({
   ],
   responses: createApiResponse(z.boolean(), "Success", 200),
 });
-treatmentRouter.delete("/:id", treatmentController.deleteTreatmentById);
+treatmentRouter.delete("/:id", treatmentController.deleteById);
