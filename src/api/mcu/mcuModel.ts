@@ -44,6 +44,22 @@ export const McuSchema = z.object({
   doctor_id: z.string().uuid(),
 });
 
+export const McuGetResponseSchema = z.object({
+  visit_id: z.string().uuid(),
+  visit_date: z.string(),
+  user_info: z.object({
+    patient_id: z.string().uuid(),
+    patient_name: z.string(),
+  }),
+  doctor_info: z.object({
+    doctor_id: z.string().uuid(),
+    doctor_name: z.string(),
+    specialization: z.string(),
+  }),
+  treatment_detail: z.array(z.string()),
+  medication_detail: z.array(z.string()),
+});
+
 export const McuTreatmentSchema = z.object({
   master_treatment_id: z.string().uuid(),
   patient_visit_id: z.string().uuid(),
