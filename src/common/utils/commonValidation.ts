@@ -11,4 +11,6 @@ export const commonValidations = {
   weight: z.number().min(0, "Weight must be a positive number"),
   dob: z.date().max(new Date(), "Date of birth must be in the past"),
   address: z.string().min(5, "Address must be at least 5 characters long"),
+  yoe: z.number().min(0, "Years of experience must be a positive number"),
+  generalString: z.string().min(1, "String must be at least 1 character long"),
 };

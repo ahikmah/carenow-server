@@ -15,7 +15,7 @@ patientRegistry.register("Patient", PatientSchema);
 // Create a new patient
 patientRegistry.registerPath({
   method: "post",
-  path: "/patients",
+  path: "/patient",
   tags: ["Patient"],
   request: {
     body: {
@@ -26,10 +26,10 @@ patientRegistry.registerPath({
 });
 patientRouter.post("/", validateRequest(GetPatientSchema), patientController.createPatient);
 
-// Get all patients
+// Get all patient
 patientRegistry.registerPath({
   method: "get",
-  path: "/patients",
+  path: "/patient",
   tags: ["Patient"],
   responses: createApiResponse(z.array(PatientSchema), "Success"),
 });
@@ -38,7 +38,7 @@ patientRouter.get("/", patientController.getAllPatients);
 // Get a patient by ID
 patientRegistry.registerPath({
   method: "get",
-  path: "/patients/{id}",
+  path: "/patient/{id}",
   tags: ["Patient"],
   parameters: [
     {
@@ -58,7 +58,7 @@ patientRouter.get("/:id", patientController.getPatientById);
 // Update a patient by ID
 patientRegistry.registerPath({
   method: "patch",
-  path: "/patients/{id}",
+  path: "/patient/{id}",
   tags: ["Patient"],
   parameters: [
     {
@@ -83,7 +83,7 @@ patientRouter.patch("/:id", patientController.updatePatientById);
 // Delete a patient by ID
 patientRegistry.registerPath({
   method: "delete",
-  path: "/patients/{id}",
+  path: "/patient/{id}",
   tags: ["Patient"],
   parameters: [
     {
