@@ -5,7 +5,7 @@
 -- Dumped from database version 16.8
 -- Dumped by pg_dump version 17.2
 
--- Started on 2025-03-30 18:29:55
+-- Started on 2025-04-01 10:21:33
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -21,7 +21,7 @@ SET row_security = off;
 
 DROP DATABASE defaultdb;
 --
--- TOC entry 4501 (class 1262 OID 16441)
+-- TOC entry 4502 (class 1262 OID 16441)
 -- Name: defaultdb; Type: DATABASE; Schema: -; Owner: -
 --
 
@@ -51,7 +51,7 @@ CREATE SCHEMA public;
 
 
 --
--- TOC entry 4502 (class 0 OID 0)
+-- TOC entry 4503 (class 0 OID 0)
 -- Dependencies: 5
 -- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: -
 --
@@ -123,7 +123,7 @@ CREATE TABLE public.medication_detail (
 
 CREATE TABLE public.patient (
     id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
-    nik character varying(16) NOT NULL,
+    patient_sec_id character varying(16) NOT NULL,
     name character varying(100) NOT NULL,
     gender character(1),
     dob date,
@@ -145,7 +145,8 @@ CREATE TABLE public.patient_visit (
     patient_id uuid NOT NULL,
     doctor_id uuid NOT NULL,
     cost real,
-    notes character varying(100)
+    notes character varying(100),
+    created timestamp with time zone DEFAULT now() NOT NULL
 );
 
 
@@ -162,7 +163,7 @@ CREATE TABLE public.treatment_detail (
 
 
 --
--- TOC entry 4489 (class 0 OID 16558)
+-- TOC entry 4490 (class 0 OID 16558)
 -- Dependencies: 216
 -- Data for Name: doctor; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -180,7 +181,7 @@ INSERT INTO public.doctor VALUES ('0876e740-2694-4b37-a239-2976503600a5', 'Dr. J
 
 
 --
--- TOC entry 4490 (class 0 OID 16566)
+-- TOC entry 4491 (class 0 OID 16566)
 -- Dependencies: 217
 -- Data for Name: master_medication; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -220,7 +221,7 @@ INSERT INTO public.master_medication VALUES ('e00be038-521c-4aaa-8623-7537f97464
 
 
 --
--- TOC entry 4491 (class 0 OID 16572)
+-- TOC entry 4492 (class 0 OID 16572)
 -- Dependencies: 218
 -- Data for Name: master_treatment; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -260,59 +261,80 @@ INSERT INTO public.master_treatment VALUES ('a44e76dd-81ea-40f3-8c13-b973f4719a5
 
 
 --
--- TOC entry 4492 (class 0 OID 16578)
+-- TOC entry 4493 (class 0 OID 16578)
 -- Dependencies: 219
 -- Data for Name: medication_detail; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.medication_detail VALUES ('9a0bd879-5230-4c87-8b0c-446fee3752c8', 'ddc45e21-f031-4f9f-ae32-8cbe2146e484', 'c29c54e4-3a3a-44d7-8e56-6ab5e866c149');
-INSERT INTO public.medication_detail VALUES ('5884b27f-9ff4-4f5c-bbf1-baadff1fd6c8', 'e00be038-521c-4aaa-8623-7537f97464ce', 'c29c54e4-3a3a-44d7-8e56-6ab5e866c149');
-INSERT INTO public.medication_detail VALUES ('b2b0c468-69e7-498b-a014-2036bdbb12c8', '9f1abfd3-7929-40ca-8ac7-da1c283da256', '7803f4a9-8b55-45a3-a018-7a5335b1d1a8');
-INSERT INTO public.medication_detail VALUES ('3d94a341-b0c5-4e1b-af31-5d789fdc8f62', 'a51d86c8-b96c-44c3-bfc3-6e40eb62a014', '7803f4a9-8b55-45a3-a018-7a5335b1d1a8');
-INSERT INTO public.medication_detail VALUES ('9e2805c2-cd56-4e7a-98fe-7c303d86e46d', '9f1abfd3-7929-40ca-8ac7-da1c283da256', '0a061d76-cd22-4ffa-9b2c-7bdd332254ef');
-INSERT INTO public.medication_detail VALUES ('d8af7414-b688-48bb-97c2-e817af730451', 'a51d86c8-b96c-44c3-bfc3-6e40eb62a014', '0a061d76-cd22-4ffa-9b2c-7bdd332254ef');
-INSERT INTO public.medication_detail VALUES ('092cb9dd-31f9-4ae7-9290-c4df2f8f48fd', '82ae2441-7405-42eb-93ed-fe82b5c652ce', '0a061d76-cd22-4ffa-9b2c-7bdd332254ef');
+INSERT INTO public.medication_detail VALUES ('e3e5817b-5685-49b4-866d-ba6239fce673', 'e00be038-521c-4aaa-8623-7537f97464ce', 'fe6bc10a-a130-40f6-8672-b02966fe51b9');
+INSERT INTO public.medication_detail VALUES ('c37705ad-5655-48b0-abbf-7471a7785ecd', 'ddc45e21-f031-4f9f-ae32-8cbe2146e484', 'fe6bc10a-a130-40f6-8672-b02966fe51b9');
+INSERT INTO public.medication_detail VALUES ('c15422f8-da10-47d5-8e58-894a0f044d44', 'e00be038-521c-4aaa-8623-7537f97464ce', '99ed1908-a598-471f-b3c8-22804ef2ab08');
+INSERT INTO public.medication_detail VALUES ('e81940a7-d8a1-4641-ad88-d549e1d8a54e', 'ddc45e21-f031-4f9f-ae32-8cbe2146e484', '99ed1908-a598-471f-b3c8-22804ef2ab08');
+INSERT INTO public.medication_detail VALUES ('9dd15bd6-6f46-4460-b4c4-151910ce6d1e', '541d534f-8ba5-487b-9d8c-ac949c7bcccd', 'd5679ac5-3a88-4e02-ad95-182453b58e29');
+INSERT INTO public.medication_detail VALUES ('41bd4186-0b92-4c7e-bfc7-a995337db76b', 'e00be038-521c-4aaa-8623-7537f97464ce', 'd5679ac5-3a88-4e02-ad95-182453b58e29');
+INSERT INTO public.medication_detail VALUES ('2c938a7f-a66e-4f49-96c1-6e334e95ce38', '541d534f-8ba5-487b-9d8c-ac949c7bcccd', 'd179369f-3814-435d-b4af-e69f5c74ffe1');
+INSERT INTO public.medication_detail VALUES ('cd72fe4d-c226-44b9-821e-baa2c9ed1de9', 'e00be038-521c-4aaa-8623-7537f97464ce', '0a4ab5ca-650b-441e-8751-54be99cf6c40');
+INSERT INTO public.medication_detail VALUES ('08dfbaee-098a-44d9-8a5c-fde3d1bec1e1', 'e00be038-521c-4aaa-8623-7537f97464ce', '7c0666c5-8712-4531-b2b2-c865ba134fea');
+INSERT INTO public.medication_detail VALUES ('49b0af2b-7515-48c6-a6e5-11acb949b1a1', '541d534f-8ba5-487b-9d8c-ac949c7bcccd', '7c0666c5-8712-4531-b2b2-c865ba134fea');
 
 
 --
--- TOC entry 4493 (class 0 OID 16584)
+-- TOC entry 4494 (class 0 OID 16584)
 -- Dependencies: 220
 -- Data for Name: patient; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.patient VALUES ('3fa85f64-5717-4562-b3fc-2c963f66afa6', '3334567890987653', 'Awaliyatul Hikmah', NULL, NULL, NULL, NULL, NULL, NULL);
 INSERT INTO public.patient VALUES ('f1d0b093-202f-43e8-9248-afd2cac26347', '1234567890987653', 'Chelsey Fisher', 'F', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO public.patient VALUES ('8abe614a-271b-43c2-bc26-1b97a99dc7a4', '4444567890987653', 'Aman Ansari', 'M', '1995-02-27', NULL, NULL, NULL, NULL);
 INSERT INTO public.patient VALUES ('8f4aee7b-1d0f-4dc5-943f-e45d03e0129c', '1111111111111111', 'Zain Ansari', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.patient VALUES ('f92169a7-0503-42f9-a8c9-8b827d1339ab', '1234567891234567', 'Maulana Hasan', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.patient VALUES ('b94e71b3-abf4-416c-990d-f085667a0aab', '1239473838562364', 'Joko Santoso', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.patient VALUES ('75c411c2-3aaa-4e4e-82c2-6e41ec35224c', '1237464859475937', 'Chicco', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.patient VALUES ('e682a91d-077b-40a4-9910-6572aff59476', '1733748583958362', 'Awall', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.patient VALUES ('f6fdb43a-c808-4e57-b6d1-5927ace2e11b', '1527374838374817', 'Awaliyatul Hikmah', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.patient VALUES ('afe8b6cd-e06f-46ea-99d9-e87e9d93bdd2', '9823943289428833', 'Maulana Hasan', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.patient VALUES ('a7937acc-76fa-4440-8b0e-c88e3c0bb135', 'PT3OIJNSI990', 'Zain Ansari', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.patient VALUES ('a6189970-1d98-4207-bc2a-9c0f8f4344d0', 'PT728992HSH', 'Chelsey Fisher', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.patient VALUES ('de1bcbe2-27c0-4ef5-855c-5db5e2dcf8c5', 'PT8139919', 'Joko Santoso', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.patient VALUES ('cbacac26-1952-4453-b191-e2aaa115c220', 'PT83481418', 'Aman Zhp', NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.patient VALUES ('07fe3511-6a50-4ff9-a92e-f1be6b30764d', 'PT9Q9DJ', 'Juminten', NULL, NULL, NULL, NULL, NULL, NULL);
 
 
 --
--- TOC entry 4494 (class 0 OID 16590)
+-- TOC entry 4495 (class 0 OID 16590)
 -- Dependencies: 221
 -- Data for Name: patient_visit; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.patient_visit VALUES ('c29c54e4-3a3a-44d7-8e56-6ab5e866c149', '2025-03-30 03:24:01.543574+00', 'f1d0b093-202f-43e8-9248-afd2cac26347', '54942d67-b341-4234-9dcb-2c5c0fde3454', NULL, NULL);
-INSERT INTO public.patient_visit VALUES ('7803f4a9-8b55-45a3-a018-7a5335b1d1a8', '2025-04-29 17:00:00+00', '8f4aee7b-1d0f-4dc5-943f-e45d03e0129c', '54942d67-b341-4234-9dcb-2c5c0fde3454', 0, NULL);
-INSERT INTO public.patient_visit VALUES ('0a061d76-cd22-4ffa-9b2c-7bdd332254ef', '2025-04-29 17:00:00+00', '3fa85f64-5717-4562-b3fc-2c963f66afa6', '54942d67-b341-4234-9dcb-2c5c0fde3454', 0, NULL);
+INSERT INTO public.patient_visit VALUES ('fe6bc10a-a130-40f6-8672-b02966fe51b9', '2025-03-31 17:00:00+00', 'afe8b6cd-e06f-46ea-99d9-e87e9d93bdd2', '54942d67-b341-4234-9dcb-2c5c0fde3454', 12.4, NULL, '2025-04-01 03:09:44.992413+00');
+INSERT INTO public.patient_visit VALUES ('99ed1908-a598-471f-b3c8-22804ef2ab08', '2025-03-31 17:00:00+00', 'a7937acc-76fa-4440-8b0e-c88e3c0bb135', 'ccd00243-7eee-451a-ada6-c94cce02c4b7', 50, NULL, '2025-04-01 03:09:44.992413+00');
+INSERT INTO public.patient_visit VALUES ('d5679ac5-3a88-4e02-ad95-182453b58e29', '2025-03-31 17:00:00+00', 'a6189970-1d98-4207-bc2a-9c0f8f4344d0', '54942d67-b341-4234-9dcb-2c5c0fde3454', 24, NULL, '2025-04-01 03:09:44.992413+00');
+INSERT INTO public.patient_visit VALUES ('d179369f-3814-435d-b4af-e69f5c74ffe1', '2025-03-31 17:00:00+00', 'de1bcbe2-27c0-4ef5-855c-5db5e2dcf8c5', '2bf988d4-79a7-40fc-80f7-b36b21e1ef6b', 120, NULL, '2025-04-01 03:09:44.992413+00');
+INSERT INTO public.patient_visit VALUES ('0a4ab5ca-650b-441e-8751-54be99cf6c40', '2025-03-31 17:00:00+00', 'cbacac26-1952-4453-b191-e2aaa115c220', 'bd129ab7-8231-4a6d-b702-fe5053fcda16', 10, NULL, '2025-04-01 03:09:44.992413+00');
+INSERT INTO public.patient_visit VALUES ('7c0666c5-8712-4531-b2b2-c865ba134fea', '2025-03-31 17:00:00+00', '07fe3511-6a50-4ff9-a92e-f1be6b30764d', '2bf988d4-79a7-40fc-80f7-b36b21e1ef6b', 14.68, NULL, '2025-04-01 03:11:57.868101+00');
 
 
 --
--- TOC entry 4495 (class 0 OID 16596)
+-- TOC entry 4496 (class 0 OID 16596)
 -- Dependencies: 222
 -- Data for Name: treatment_detail; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.treatment_detail VALUES ('fa4bc66f-b774-42a6-afd1-dab7bb685082', '54da5634-b60e-41e6-9301-9891294e21f6', 'c29c54e4-3a3a-44d7-8e56-6ab5e866c149');
-INSERT INTO public.treatment_detail VALUES ('1765c37e-0eb5-4f3d-b1fe-8baeb570a79e', '5b19cea3-4fcf-40cc-882c-865c98a86d72', 'c29c54e4-3a3a-44d7-8e56-6ab5e866c149');
-INSERT INTO public.treatment_detail VALUES ('1c73319e-de86-4b58-8f1c-27fe2ff79046', '5b19cea3-4fcf-40cc-882c-865c98a86d72', '7803f4a9-8b55-45a3-a018-7a5335b1d1a8');
-INSERT INTO public.treatment_detail VALUES ('cebcada5-4b3d-42ff-b6d9-fbfc0e734ffb', 'eeb65efa-8568-489e-90c0-aadc90c26d4b', '7803f4a9-8b55-45a3-a018-7a5335b1d1a8');
-INSERT INTO public.treatment_detail VALUES ('4bbb34fa-44d9-4462-913b-d3d811e53c8a', '5b19cea3-4fcf-40cc-882c-865c98a86d72', '0a061d76-cd22-4ffa-9b2c-7bdd332254ef');
-INSERT INTO public.treatment_detail VALUES ('c9ecb95b-7cd3-4342-95f9-6c5e7deffc62', 'eeb65efa-8568-489e-90c0-aadc90c26d4b', '0a061d76-cd22-4ffa-9b2c-7bdd332254ef');
+INSERT INTO public.treatment_detail VALUES ('ec4ff254-da63-44c2-a35a-0da0da87a2ce', '5b19cea3-4fcf-40cc-882c-865c98a86d72', 'fe6bc10a-a130-40f6-8672-b02966fe51b9');
+INSERT INTO public.treatment_detail VALUES ('3172cd34-6ca3-4e79-8357-b85ce2da9994', '5b19cea3-4fcf-40cc-882c-865c98a86d72', '99ed1908-a598-471f-b3c8-22804ef2ab08');
+INSERT INTO public.treatment_detail VALUES ('082d5de1-bf98-4b48-8d84-1639287bd343', 'eeb65efa-8568-489e-90c0-aadc90c26d4b', '99ed1908-a598-471f-b3c8-22804ef2ab08');
+INSERT INTO public.treatment_detail VALUES ('36b4ca84-ee35-4c42-bd93-c66901b4c72e', 'eeb65efa-8568-489e-90c0-aadc90c26d4b', 'd5679ac5-3a88-4e02-ad95-182453b58e29');
+INSERT INTO public.treatment_detail VALUES ('04506c62-a3ae-4e28-b35f-918eb8b06833', '54da5634-b60e-41e6-9301-9891294e21f6', 'd5679ac5-3a88-4e02-ad95-182453b58e29');
+INSERT INTO public.treatment_detail VALUES ('3c9af2c4-84ea-4958-91cf-bd8023b269fc', 'eeb65efa-8568-489e-90c0-aadc90c26d4b', 'd179369f-3814-435d-b4af-e69f5c74ffe1');
+INSERT INTO public.treatment_detail VALUES ('f45af578-b517-404b-ae8a-9047f82de5fc', '54da5634-b60e-41e6-9301-9891294e21f6', 'd179369f-3814-435d-b4af-e69f5c74ffe1');
+INSERT INTO public.treatment_detail VALUES ('3ad6d148-28c1-4e4e-a4b6-8bad2f3d2add', '2bb16f86-7504-48a3-9ad7-db0f9c560b97', 'd179369f-3814-435d-b4af-e69f5c74ffe1');
+INSERT INTO public.treatment_detail VALUES ('486fd2d4-2db7-4d01-a961-8e707b041079', '54da5634-b60e-41e6-9301-9891294e21f6', '0a4ab5ca-650b-441e-8751-54be99cf6c40');
+INSERT INTO public.treatment_detail VALUES ('2f57b026-75d4-4808-a15c-7ce2ce107ff7', 'eeb65efa-8568-489e-90c0-aadc90c26d4b', '7c0666c5-8712-4531-b2b2-c865ba134fea');
+INSERT INTO public.treatment_detail VALUES ('ebc845b7-2f7b-41ca-a906-2f99264685da', '5b19cea3-4fcf-40cc-882c-865c98a86d72', '7c0666c5-8712-4531-b2b2-c865ba134fea');
 
 
 --
--- TOC entry 4311 (class 2606 OID 16565)
+-- TOC entry 4312 (class 2606 OID 16565)
 -- Name: doctor doctor_pk; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -321,7 +343,7 @@ ALTER TABLE ONLY public.doctor
 
 
 --
--- TOC entry 4313 (class 2606 OID 16681)
+-- TOC entry 4314 (class 2606 OID 16681)
 -- Name: doctor doctor_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -330,7 +352,7 @@ ALTER TABLE ONLY public.doctor
 
 
 --
--- TOC entry 4315 (class 2606 OID 16683)
+-- TOC entry 4316 (class 2606 OID 16683)
 -- Name: doctor doctor_unique_1; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -339,7 +361,7 @@ ALTER TABLE ONLY public.doctor
 
 
 --
--- TOC entry 4317 (class 2606 OID 16685)
+-- TOC entry 4318 (class 2606 OID 16685)
 -- Name: doctor doctor_unique_2; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -348,7 +370,7 @@ ALTER TABLE ONLY public.doctor
 
 
 --
--- TOC entry 4319 (class 2606 OID 16571)
+-- TOC entry 4320 (class 2606 OID 16571)
 -- Name: master_medication master_medication_pk; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -357,7 +379,7 @@ ALTER TABLE ONLY public.master_medication
 
 
 --
--- TOC entry 4321 (class 2606 OID 16677)
+-- TOC entry 4322 (class 2606 OID 16677)
 -- Name: master_medication master_medication_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -366,7 +388,7 @@ ALTER TABLE ONLY public.master_medication
 
 
 --
--- TOC entry 4323 (class 2606 OID 16577)
+-- TOC entry 4324 (class 2606 OID 16577)
 -- Name: master_treatment master_treatment_pk; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -375,7 +397,7 @@ ALTER TABLE ONLY public.master_treatment
 
 
 --
--- TOC entry 4325 (class 2606 OID 16675)
+-- TOC entry 4326 (class 2606 OID 16675)
 -- Name: master_treatment master_treatment_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -384,7 +406,7 @@ ALTER TABLE ONLY public.master_treatment
 
 
 --
--- TOC entry 4327 (class 2606 OID 16583)
+-- TOC entry 4328 (class 2606 OID 16583)
 -- Name: medication_detail medication_detail_pk; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -393,7 +415,7 @@ ALTER TABLE ONLY public.medication_detail
 
 
 --
--- TOC entry 4329 (class 2606 OID 16694)
+-- TOC entry 4330 (class 2606 OID 16694)
 -- Name: medication_detail medication_detail_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -402,7 +424,7 @@ ALTER TABLE ONLY public.medication_detail
 
 
 --
--- TOC entry 4331 (class 2606 OID 16589)
+-- TOC entry 4332 (class 2606 OID 16589)
 -- Name: patient patient_pk; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -411,16 +433,16 @@ ALTER TABLE ONLY public.patient
 
 
 --
--- TOC entry 4333 (class 2606 OID 16679)
+-- TOC entry 4334 (class 2606 OID 16679)
 -- Name: patient patient_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.patient
-    ADD CONSTRAINT patient_unique UNIQUE (nik);
+    ADD CONSTRAINT patient_unique UNIQUE (patient_sec_id);
 
 
 --
--- TOC entry 4335 (class 2606 OID 16595)
+-- TOC entry 4336 (class 2606 OID 16595)
 -- Name: patient_visit patient_visit_pk; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -429,7 +451,7 @@ ALTER TABLE ONLY public.patient_visit
 
 
 --
--- TOC entry 4337 (class 2606 OID 16601)
+-- TOC entry 4338 (class 2606 OID 16601)
 -- Name: treatment_detail treatment_detail_pk; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -438,7 +460,7 @@ ALTER TABLE ONLY public.treatment_detail
 
 
 --
--- TOC entry 4339 (class 2606 OID 16696)
+-- TOC entry 4340 (class 2606 OID 16696)
 -- Name: treatment_detail treatment_detail_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -447,7 +469,7 @@ ALTER TABLE ONLY public.treatment_detail
 
 
 --
--- TOC entry 4340 (class 2606 OID 16642)
+-- TOC entry 4341 (class 2606 OID 16642)
 -- Name: medication_detail medication_detail_master_medication; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -456,7 +478,7 @@ ALTER TABLE ONLY public.medication_detail
 
 
 --
--- TOC entry 4341 (class 2606 OID 16652)
+-- TOC entry 4342 (class 2606 OID 16652)
 -- Name: medication_detail medication_detail_patient_visit; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -465,7 +487,7 @@ ALTER TABLE ONLY public.medication_detail
 
 
 --
--- TOC entry 4342 (class 2606 OID 16637)
+-- TOC entry 4343 (class 2606 OID 16637)
 -- Name: patient_visit patient_visit_doctor; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -474,7 +496,7 @@ ALTER TABLE ONLY public.patient_visit
 
 
 --
--- TOC entry 4343 (class 2606 OID 16667)
+-- TOC entry 4344 (class 2606 OID 16667)
 -- Name: patient_visit patient_visit_patient; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -483,7 +505,7 @@ ALTER TABLE ONLY public.patient_visit
 
 
 --
--- TOC entry 4344 (class 2606 OID 16647)
+-- TOC entry 4345 (class 2606 OID 16647)
 -- Name: treatment_detail treatment_detail_master_treatment; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -492,7 +514,7 @@ ALTER TABLE ONLY public.treatment_detail
 
 
 --
--- TOC entry 4345 (class 2606 OID 16657)
+-- TOC entry 4346 (class 2606 OID 16657)
 -- Name: treatment_detail treatment_detail_patient_visit; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -500,7 +522,7 @@ ALTER TABLE ONLY public.treatment_detail
     ADD CONSTRAINT treatment_detail_patient_visit FOREIGN KEY (patient_visit_id) REFERENCES public.patient_visit(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
--- Completed on 2025-03-30 18:30:02
+-- Completed on 2025-04-01 10:21:39
 
 --
 -- PostgreSQL database dump complete

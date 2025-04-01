@@ -1,4 +1,9 @@
 # CareNow RESTful API
+![Node.js](https://img.shields.io/badge/Node.js-v22.13.0-green)
+![TypeScript](https://img.shields.io/badge/TypeScript-%5E4.0-blue)
+![Express](https://img.shields.io/badge/Express.js-4.x-red)
+![Docker](https://img.shields.io/badge/Docker-Supported-blue)
+
 
 This is the backend service for CareNow, built with **Node.js**, **Express**, and **TypeScript**. It provides RESTful APIs for managing patient data and integrates with OpenAPI for API documentation.
 
@@ -10,7 +15,7 @@ This is the backend service for CareNow, built with **Node.js**, **Express**, an
 - **Node.js**: Version `22.13.0` (specified in `.nvmrc`).
 - **Docker** (optional): For containerized deployment.
 
-> _PostgreSQL is not required to be installed locally, as this project utilizes a hosted database service._
+> PostgreSQL isn't required to be installed locally since this project uses a hosted database service. But if you want to set up a local DB instance, feel free to use the SQL script in the docs folder.
 
 ### Installation
 
@@ -26,7 +31,7 @@ This is the backend service for CareNow, built with **Node.js**, **Express**, an
    ```
 
 3. Set up environment variables:
-   - Copy `.env.template` to `.env` and update the values as needed.
+   - Copy `.env.template` to `.env`, then update the values using the details I emailed to you.
 
 4. Start the development server:
    ```bash

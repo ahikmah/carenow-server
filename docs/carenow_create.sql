@@ -1,5 +1,3 @@
--- Last modification date: 2025-03-29 22:24:34.943
-
 -- tables
 -- Table: doctor
 CREATE TABLE doctor (
@@ -41,7 +39,7 @@ CREATE TABLE medication_detail (
 -- Table: patient
 CREATE TABLE patient (
     id uuid  NOT NULL DEFAULT uuid_generate_v4(),
-    nik varchar(16)  NOT NULL,
+    patient_sec_id varchar(16)  NOT NULL,
     name varchar(100)  NOT NULL,
     gender char(1)  NULL,
     dob date  NULL,
@@ -58,7 +56,9 @@ CREATE TABLE patient_visit (
     date_of_treatment timestamp  NOT NULL,
     patient_id uuid  NOT NULL,
     doctor_id uuid  NOT NULL,
+    cost float4  NOT NULL,
     notes varchar(100)  NULL,
+    created timestamptz  NOT NULL,
     CONSTRAINT patient_visit_pk PRIMARY KEY (id)
 );
 
