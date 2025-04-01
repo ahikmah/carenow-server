@@ -8,7 +8,7 @@ import {
 
 export class PatientRepository {
   async add(data: Patient, db: any): Promise<Patient | null> {
-    const sql = insert("patient", data, ["name", "nik"]);
+    const sql = insert("patient", data, ["name", "patient_sec_id"]);
     const result = await db.query(sql);
 
     return result.rows[0] || null;

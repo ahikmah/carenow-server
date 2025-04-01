@@ -9,7 +9,7 @@ class McuController {
     const payload = req.body;
 
     const patientData = {
-      nik: payload.patient_id,
+      patient_sec_id: payload.patient_id,
       name: payload.patient_name,
     };
 

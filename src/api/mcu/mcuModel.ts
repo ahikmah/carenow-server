@@ -13,7 +13,7 @@ export type McuMedication = z.infer<typeof McuMedicationSchema>;
 export const MappedMcuSchema = z.object({
   patientData: z.object({
     name: z.string(),
-    nik: z.string(),
+    patient_sec_id: z.string(),
   }),
 
   mcuData: z.object({
@@ -73,7 +73,7 @@ export const McuMedicationSchema = z.object({
 export const CreateMcuSchema = z.object({
   body: z.object({
     patient_name: commonValidations.name,
-    patient_id: commonValidations.nik,
+    patient_id: z.string(),
     date_of_treatment: z.string(),
     treatment_description: z.array(z.string()),
     medication_prescribed: z.array(z.string()),

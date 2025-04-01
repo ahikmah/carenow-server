@@ -22,7 +22,7 @@ export class McuService {
   async add(data: MappedMcu, db: any): Promise<ServiceResponse<Mcu | null>> {
     try {
       // Check if patient exists
-      let patient = await this.patientRepository.findByKey("nik", data.patientData.nik, db);
+      let patient = await this.patientRepository.findByKey("patient_sec_id", data.patientData.patient_sec_id, db);
 
       // Create patient if not exists
       if (!patient) {
